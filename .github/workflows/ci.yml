@@ -8,34 +8,59 @@ on:
 
 jobs:
   backend-check:
-    if: contains(github.event.pull_request.changed_files, 'backend/') || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check if backend has code yet
+        id: check
+        run: |
+          if [ -f "backend/gradlew" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-java@v4
+        if: steps.check.outputs.exists == 'true'
         with:
           distribution: temurin
           java-version: "21"
       - name: Gradle build & test
+        if: steps.check.outputs.exists == 'true'
         working-directory: backend
-        run: ./gradlew clean check --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew clean check --no-daemon
+      - name: Skip (no backend code yet)
+        if: steps.check.outputs.exists == 'false'
+        run: echo "backend/gradlew 없음 — 아직 코드 없어서 스킵"
 
   ai-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check if ai has code yet
+        id: check
+        run: |
+          if [ -f "ai/requirements.txt" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
+        if: steps.check.outputs.exists == 'true'
         with:
           python-version: "3.12"
-      - name: Install deps
+      - name: Install deps & test
+        if: steps.check.outputs.exists == 'true'
         working-directory: ai
-        run: pip install -r requirements.txt --break-system-packages
-      - name: Run tests
-        working-directory: ai
-        run: pytest
+        run: |
+          pip install -r requirements.txt --break-system-packages
+          pytest
+      - name: Skip (no ai code yet)
+        if: steps.check.outputs.exists == 'false'
+        run: echo "ai/requirements.txt 없음 — 아직 코드 없어서 스킵"
 
-  # 위 두 job의 결과를 하나로 합치는 고정 이름 체크
-  # 브랜치 보호 규칙에는 이 job 하나만 등록하면 경로 필터와 무관하게 항상 동작함
+  # 브랜치 보호 규칙에는 이 job 하나만 등록하면 됨 (항상 존재하는 고정 이름 체크)
   ci-summary:
     needs: [backend-check, ai-check]
     if: always()
