@@ -1,0 +1,39 @@
+# ── Java / Gradle (backend) ──
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+*.class
+HELP.md
+
+# ── Python (ai) ──
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# ── Node (frontend, 확정 시) ──
+node_modules/
+dist/
+.next/
+
+# ── 환경설정 / 비밀값 ──
+.env
+.env.*
+!.env.example
+
+# ── IDE ──
+.idea/
+.vscode/
+*.iml
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── 로그 ──
+*.log
+logs/

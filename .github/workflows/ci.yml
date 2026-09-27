@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  backend-check:
+    if: contains(github.event.pull_request.changed_files, 'backend/') || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Gradle build & test
+        working-directory: backend
+        run: ./gradlew clean check --no-daemon
+
+  ai-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        working-directory: ai
+        run: pip install -r requirements.txt --break-system-packages
+      - name: Run tests
+        working-directory: ai
+        run: pytest
+
+  # 위 두 job의 결과를 하나로 합치는 고정 이름 체크
+  # 브랜치 보호 규칙에는 이 job 하나만 등록하면 경로 필터와 무관하게 항상 동작함
+  ci-summary:
+    needs: [backend-check, ai-check]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.backend-check.result }}" = "failure" ] || [ "${{ needs.ai-check.result }}" = "failure" ]; then
+            exit 1
+          fi
