@@ -1,0 +1,12 @@
+# Credentials and ports come from Testcontainers @ServiceConnection.
+# The local .env file is never imported by the test profile.
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:1/not-configured
+    username: unused
+    password: unused
+  rabbitmq:
+    host: 127.0.0.1
+    port: 1
+    username: unused
+    password: unused

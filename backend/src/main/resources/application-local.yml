@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: optional:file:../.env[.properties],optional:file:.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:127.0.0.1}:${POSTGRES_PORT:5432}/${POSTGRES_DB:lawground}
+    username: ${POSTGRES_USER:lawground}
+    password: ${POSTGRES_PASSWORD}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:lawground}
+    password: ${RABBITMQ_PASSWORD}
+
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+
+lawground:
+  security:
+    allow-local-docs: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

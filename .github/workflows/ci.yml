@@ -4,44 +4,53 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, "codex/**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   backend-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check if backend has code yet
-        id: check
-        run: |
-          if [ -f "backend/gradlew" ]; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
       - uses: actions/setup-java@v4
-        if: steps.check.outputs.exists == 'true'
         with:
           distribution: temurin
           java-version: "21"
-      - name: Gradle build & test
-        if: steps.check.outputs.exists == 'true'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Repository boundaries
+        run: python3 scripts/check_repository.py
+      - name: Validate development Compose
+        env:
+          POSTGRES_PASSWORD: ci-compose-check-only
+          RABBITMQ_PASSWORD: ci-compose-check-only
+        run: docker compose config --quiet
+      - name: Build, format, unit and real infrastructure tests
         working-directory: backend
-        run: |
-          chmod +x gradlew
-          ./gradlew clean check --no-daemon
-      - name: Skip (no backend code yet)
-        if: steps.check.outputs.exists == 'false'
-        run: echo "backend/gradlew 없음 — 아직 코드 없어서 스킵"
+        run: ./gradlew clean check bootJar --no-daemon
+      - name: Verify backend container build
+        run: docker build --tag lawground-backend:ci --file backend/Dockerfile .
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-reports
+          path: backend/build/reports/tests/
+          if-no-files-found: ignore
 
   ai-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check if ai has code yet
+      - name: Detect Python service implementation
         id: check
         run: |
-          if [ -f "ai/requirements.txt" ]; then
+          if [ -f "ai-service/requirements.txt" ]; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -50,24 +59,25 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         with:
           python-version: "3.12"
-      - name: Install deps & test
+      - name: Install dependencies and test
         if: steps.check.outputs.exists == 'true'
-        working-directory: ai
+        working-directory: ai-service
         run: |
-          pip install -r requirements.txt --break-system-packages
-          pytest
-      - name: Skip (no ai code yet)
+          python -m pip install -r requirements.txt
+          python -m pytest
+      - name: Python service not implemented yet
         if: steps.check.outputs.exists == 'false'
-        run: echo "ai/requirements.txt 없음 — 아직 코드 없어서 스킵"
+        run: echo "ai-service is a directory scaffold; no Python tests claimed."
 
-  # 브랜치 보호 규칙에는 이 job 하나만 등록하면 됨 (항상 존재하는 고정 이름 체크)
   ci-summary:
     needs: [backend-check, ai-check]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Check results
+      - name: Require every job to complete successfully
+        env:
+          BACKEND_RESULT: ${{ needs.backend-check.result }}
+          AI_RESULT: ${{ needs.ai-check.result }}
         run: |
-          if [ "${{ needs.backend-check.result }}" = "failure" ] || [ "${{ needs.ai-check.result }}" = "failure" ]; then
-            exit 1
-          fi
+          test "$BACKEND_RESULT" = "success"
+          test "$AI_RESULT" = "success"
