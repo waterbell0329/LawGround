@@ -25,6 +25,17 @@ public class GlobalExceptionHandler {
         this.clock = clock;
     }
 
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponseDTO> api(
+            ApiException exception, HttpServletRequest request) {
+        return response(
+                exception.status(),
+                exception.code(),
+                exception.getMessage(),
+                exception.fields(),
+                request);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> validation(
             MethodArgumentNotValidException exception, HttpServletRequest request) {

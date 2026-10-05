@@ -1,0 +1,2315 @@
+openapi: 3.1.0
+info:
+  title: LawGround 사용자 API
+  version: 0.1.0-draft
+  description: 등록·단건 조회는 2주차 구현. 나머지는 검토용 초안이며 팀 합의/전체 구현 완료를 뜻하지 않는다. 모든 예시는 합성 데이터다.
+servers:
+- url: http://127.0.0.1:8080/api/v1
+x-contract-status: draft-not-team-approved
+paths:
+  /questions:
+    post:
+      operationId: createQuestion
+      summary: createQuestion
+      x-implementation-status: implemented-week-02
+      security:
+      - SessionCookie: []
+      responses:
+        '201':
+          description: 생성 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+              example:
+                subject: BROKER_LAW
+                stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                questionType: SELECT_CORRECT
+                choices:
+                - number: 1
+                  text: 합성 설명 1
+                - number: 2
+                  text: 합성 설명 2
+                - number: 3
+                  text: 합성 설명 3
+                - number: 4
+                  text: 합성 설명 4
+                - number: 5
+                  text: 합성 설명 5
+                providedAnswerNumber: 2
+                referenceDate: '2025-10-25'
+                id: 00000000-0000-4000-8000-000000000001
+                visibility: PRIVATE
+                answerSource: USER_PROVIDED
+                revision: 1
+                createdAt: '2026-10-03T13:00:00Z'
+                updatedAt: '2026-10-03T13:00:00Z'
+          headers:
+            Location:
+              schema:
+                type: string
+            ETag:
+              schema: &id001
+                type: string
+                pattern: ^"[1-9][0-9]*"$
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: DUPLICATE_QUESTION
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '413':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: PAYLOAD_TOO_LARGE
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionInput'
+            example:
+              subject: BROKER_LAW
+              stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+              questionType: SELECT_CORRECT
+              choices:
+              - number: 1
+                text: 합성 설명 1
+              - number: 2
+                text: 합성 설명 2
+              - number: 3
+                text: 합성 설명 3
+              - number: 4
+                text: 합성 설명 4
+              - number: 5
+                text: 합성 설명 5
+              providedAnswerNumber: 2
+              referenceDate: '2025-10-25'
+      parameters:
+      - &id003
+        name: X-CSRF-TOKEN
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+    get:
+      operationId: listQuestions
+      summary: listQuestions
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionList'
+              example:
+                items: []
+                nextCursor: null
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - &id006
+        name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 20
+      - &id007
+        name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          pattern: \S
+      - name: scope
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - mine
+          - public
+          default: mine
+  /questions/{id}:
+    get:
+      operationId: getQuestion
+      summary: getQuestion
+      x-implementation-status: implemented-week-02
+      security:
+      - {}
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+              example:
+                subject: BROKER_LAW
+                stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                questionType: SELECT_CORRECT
+                choices:
+                - number: 1
+                  text: 합성 설명 1
+                - number: 2
+                  text: 합성 설명 2
+                - number: 3
+                  text: 합성 설명 3
+                - number: 4
+                  text: 합성 설명 4
+                - number: 5
+                  text: 합성 설명 5
+                providedAnswerNumber: 2
+                referenceDate: '2025-10-25'
+                id: 00000000-0000-4000-8000-000000000001
+                visibility: PRIVATE
+                answerSource: USER_PROVIDED
+                revision: 1
+                createdAt: '2026-10-03T13:00:00Z'
+                updatedAt: '2026-10-03T13:00:00Z'
+          headers:
+            ETag:
+              schema: *id001
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - &id002
+        name: id
+        in: path
+        required: true
+        schema: &id005
+          type: string
+          format: uuid
+    put:
+      operationId: replaceQuestion
+      summary: replaceQuestion
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+              example:
+                subject: BROKER_LAW
+                stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                questionType: SELECT_CORRECT
+                choices:
+                - number: 1
+                  text: 합성 설명 1
+                - number: 2
+                  text: 합성 설명 2
+                - number: 3
+                  text: 합성 설명 3
+                - number: 4
+                  text: 합성 설명 4
+                - number: 5
+                  text: 합성 설명 5
+                providedAnswerNumber: 2
+                referenceDate: '2025-10-25'
+                id: 00000000-0000-4000-8000-000000000001
+                visibility: PRIVATE
+                answerSource: USER_PROVIDED
+                revision: 2
+                createdAt: '2026-10-03T13:00:00Z'
+                updatedAt: '2026-10-03T13:00:00Z'
+          headers:
+            ETag:
+              schema: *id001
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '413':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: PAYLOAD_TOO_LARGE
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '428':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: PRECONDITION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionInput'
+            example:
+              subject: BROKER_LAW
+              stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+              questionType: SELECT_CORRECT
+              choices:
+              - number: 1
+                text: 합성 설명 1
+              - number: 2
+                text: 합성 설명 2
+              - number: 3
+                text: 합성 설명 3
+              - number: 4
+                text: 합성 설명 4
+              - number: 5
+                text: 합성 설명 5
+              providedAnswerNumber: 2
+              referenceDate: '2025-10-25'
+      parameters:
+      - *id002
+      - &id004
+        name: If-Match
+        in: header
+        required: true
+        schema: *id001
+      - *id003
+    delete:
+      operationId: deleteQuestion
+      summary: deleteQuestion
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '204':
+          description: 처리 완료, 본문 없음
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '428':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: PRECONDITION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+      - *id004
+      - *id003
+  /questions/{id}/trace-runs:
+    post:
+      operationId: createTraceRun
+      summary: createTraceRun
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '202':
+          description: 접수됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceAccepted'
+              example:
+                runId: 00000000-0000-4000-8000-000000000002
+                jobId: 00000000-0000-4000-8000-000000000003
+                status: QUEUED
+                statusUrl: /api/v1/jobs/00000000-0000-4000-8000-000000000003
+                resultUrl: /api/v1/trace-runs/00000000-0000-4000-8000-000000000002/result
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraceInput'
+            example:
+              questionRevision: 1
+      parameters:
+      - *id002
+      - *id003
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema: *id005
+    get:
+      operationId: listTraceRuns
+      summary: listTraceRuns
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceRunList'
+              example:
+                items:
+                - id: 00000000-0000-4000-8000-000000000002
+                  questionId: 00000000-0000-4000-8000-000000000001
+                  questionRevision: 1
+                  referenceDate: '2025-10-25'
+                  status: COMPLETED
+                  verdict: HOLD
+                  executionMode: MOCK
+                  versions:
+                    pipelineVersion: fixture-v1
+                    embeddingModelRevision: null
+                    tokenizerVersion: null
+                    promptVersion: null
+                    verifierModelRevision: null
+                    corpusManifestHash: null
+                  createdAt: '2026-10-03T13:00:00Z'
+                  completedAt: '2026-10-03T13:00:00Z'
+                nextCursor: null
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+      - *id006
+      - *id007
+  /jobs/{id}:
+    get:
+      operationId: getJob
+      summary: getJob
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+              example:
+                id: 00000000-0000-4000-8000-000000000003
+                runId: 00000000-0000-4000-8000-000000000002
+                status: SUCCEEDED
+                stage: PERSIST
+                stageAttempt: 1
+                nextAttemptAt: null
+                errorCode: null
+                createdAt: '2026-10-03T13:00:00Z'
+                updatedAt: '2026-10-03T13:00:00Z'
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+  /trace-runs/{id}:
+    get:
+      operationId: getTraceRun
+      summary: getTraceRun
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceRun'
+              example:
+                id: 00000000-0000-4000-8000-000000000002
+                questionId: 00000000-0000-4000-8000-000000000001
+                questionRevision: 1
+                referenceDate: '2025-10-25'
+                status: COMPLETED
+                verdict: HOLD
+                executionMode: MOCK
+                versions:
+                  pipelineVersion: fixture-v1
+                  embeddingModelRevision: null
+                  tokenizerVersion: null
+                  promptVersion: null
+                  verifierModelRevision: null
+                  corpusManifestHash: null
+                createdAt: '2026-10-03T13:00:00Z'
+                completedAt: '2026-10-03T13:00:00Z'
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+  /trace-runs/{id}/result:
+    get:
+      operationId: getTraceResult
+      summary: getTraceResult
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+              example:
+                runId: 00000000-0000-4000-8000-000000000002
+                questionId: 00000000-0000-4000-8000-000000000001
+                questionRevision: 1
+                inputSnapshot:
+                  subject: BROKER_LAW
+                  stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                  questionType: SELECT_CORRECT
+                  choices:
+                  - number: 1
+                    text: 합성 설명 1
+                  - number: 2
+                    text: 합성 설명 2
+                  - number: 3
+                    text: 합성 설명 3
+                  - number: 4
+                    text: 합성 설명 4
+                  - number: 5
+                    text: 합성 설명 5
+                  providedAnswerNumber: 2
+                  referenceDate: '2025-10-25'
+                  revision: 1
+                referenceDate: '2025-10-25'
+                executionMode: MOCK
+                verdict: HOLD
+                reasonCode: LAW_VERSION_UNAVAILABLE
+                summary: '합성 테스트: 기준일의 법령 원문이 준비되지 않았습니다.'
+                evidences: []
+                choiceAnalyses: null
+                versions:
+                  pipelineVersion: fixture-v1
+                  embeddingModelRevision: null
+                  tokenizerVersion: null
+                  promptVersion: null
+                  verifierModelRevision: null
+                  corpusManifestHash: null
+                completedAt: '2026-10-03T13:00:00Z'
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+  /trace-runs/{id}/cancel:
+    post:
+      operationId: cancelTraceRun
+      summary: cancelTraceRun
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '202':
+          description: 접수됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelAccepted'
+              example:
+                runId: 00000000-0000-4000-8000-000000000002
+                cancelRequested: true
+                status: RUNNING
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelAccepted'
+              example:
+                runId: 00000000-0000-4000-8000-000000000002
+                cancelRequested: true
+                status: CANCELLED
+      parameters:
+      - *id002
+      - *id003
+  /trace-runs/{id}/recommendations:
+    get:
+      operationId: listRecommendations
+      summary: listRecommendations
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationList'
+              example:
+                items: []
+                nextCursor: null
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '409':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VERSION_CONFLICT
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 5
+  /law-articles/{id}:
+    get:
+      operationId: getLawArticle
+      summary: getLawArticle
+      x-implementation-status: planned
+      security: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawArticle'
+              example:
+                id: 00000000-0000-4000-8000-000000000005
+                lawVersionId: 00000000-0000-4000-8000-000000000006
+                lawTitle: 개발용 합성 법령
+                articleLabel: 합성 제1조
+                sourceText: 합성 원문입니다.
+                sourceUrl: https://example.invalid/fixture
+                effectiveFrom: '2025-01-01'
+                effectiveTo: null
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: VALIDATION_FAILED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '404':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RESOURCE_NOT_FOUND
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id002
+  /me:
+    get:
+      operationId: getCurrentMember
+      summary: getCurrentMember
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+              example:
+                id: 00000000-0000-4000-8000-000000000007
+                displayName: 개발용 회원
+        '401':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: AUTHENTICATION_REQUIRED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+  /auth/csrf:
+    get:
+      operationId: getCsrfToken
+      summary: getCsrfToken
+      x-implementation-status: planned
+      security: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsrfToken'
+              example:
+                token: fixture-only-csrf
+                headerName: X-CSRF-TOKEN
+                parameterName: _csrf
+  /auth/logout:
+    post:
+      operationId: logoutCurrentSession
+      summary: logoutCurrentSession
+      x-implementation-status: planned
+      security:
+      - SessionCookie: []
+      responses:
+        '204':
+          description: 처리 완료, 본문 없음
+        '403':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: ACCESS_DENIED
+                message: 입력값을 확인해 주세요.
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                fieldErrors: []
+      parameters:
+      - *id003
+  /oauth2/authorization/google:
+    get:
+      operationId: beginGoogleLogin
+      summary: beginGoogleLogin
+      x-implementation-status: planned
+      security: []
+      responses:
+        '302':
+          description: 고정 경로로 이동
+          headers:
+            Location:
+              schema:
+                type: string
+      description: Google 로그인 시작
+      servers:
+      - url: http://127.0.0.1:8080
+  /login/oauth2/code/google:
+    get:
+      operationId: googleLoginCallback
+      summary: googleLoginCallback
+      x-implementation-status: planned
+      security: []
+      responses:
+        '302':
+          description: 고정 경로로 이동
+          headers:
+            Location:
+              schema:
+                type: string
+      description: code/state 검증 후 고정 성공/실패 경로로 이동
+      servers:
+      - url: http://127.0.0.1:8080
+      parameters:
+      - name: code
+        in: query
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+      - name: error
+        in: query
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+components:
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      in: cookie
+      name: SESSION
+  schemas:
+    Choice:
+      type: object
+      additionalProperties: false
+      properties:
+        number:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+      required:
+      - number
+      - text
+    QuestionInput:
+      type: object
+      additionalProperties: false
+      properties:
+        subject: &id008
+          type: string
+          enum:
+          - BROKER_LAW
+        stem: &id009
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        questionType: &id010
+          type: string
+          enum:
+          - SELECT_CORRECT
+          - SELECT_INCORRECT
+        choices: &id011
+          type: array
+          items:
+            $ref: '#/components/schemas/Choice'
+          minItems: 5
+          maxItems: 5
+          allOf:
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 1
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 2
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 3
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 4
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 5
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+        providedAnswerNumber: &id012
+          type: integer
+          minimum: 1
+          maximum: 5
+        referenceDate: &id013
+          type: string
+          format: date
+      required:
+      - subject
+      - stem
+      - questionType
+      - choices
+      - providedAnswerNumber
+      - referenceDate
+    QuestionSnapshot:
+      type: object
+      additionalProperties: false
+      properties:
+        subject: *id008
+        stem: *id009
+        questionType: *id010
+        choices: *id011
+        providedAnswerNumber: *id012
+        referenceDate: *id013
+        revision:
+          type: integer
+          minimum: 1
+      required:
+      - subject
+      - stem
+      - questionType
+      - choices
+      - providedAnswerNumber
+      - referenceDate
+      - revision
+    FieldError:
+      type: object
+      additionalProperties: false
+      properties:
+        field:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        message:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+      required:
+      - field
+      - message
+    Versions:
+      type: object
+      additionalProperties: false
+      properties:
+        pipelineVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        embeddingModelRevision:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        tokenizerVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        promptVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        verifierModelRevision:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        corpusManifestHash:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+      required:
+      - pipelineVersion
+      - embeddingModelRevision
+      - tokenizerVersion
+      - promptVersion
+      - verifierModelRevision
+      - corpusManifestHash
+    Tag:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+      required:
+      - code
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          enum:
+          - VALIDATION_FAILED
+          - MALFORMED_REQUEST
+          - REQUEST_FAILED
+          - AUTHENTICATION_REQUIRED
+          - ACCESS_DENIED
+          - RESOURCE_NOT_FOUND
+          - DUPLICATE_QUESTION
+          - IDEMPOTENCY_CONFLICT
+          - VERSION_CONFLICT
+          - RESULT_NOT_READY
+          - PAYLOAD_TOO_LARGE
+          - PRECONDITION_REQUIRED
+          - RATE_LIMITED
+          - INTERNAL_SERVER_ERROR
+        message:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+        requestId:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+        timestamp: &id014
+          type: string
+          format: date-time
+          pattern: Z$
+        fieldErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+          minItems: 0
+          maxItems: 50
+      required:
+      - code
+      - message
+      - requestId
+      - timestamp
+      - fieldErrors
+    Question:
+      type: object
+      additionalProperties: false
+      properties:
+        subject:
+          type: string
+          enum:
+          - BROKER_LAW
+        stem:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        questionType:
+          type: string
+          enum:
+          - SELECT_CORRECT
+          - SELECT_INCORRECT
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Choice'
+          minItems: 5
+          maxItems: 5
+          allOf:
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 1
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 2
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 3
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 4
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 5
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+        providedAnswerNumber:
+          type: integer
+          minimum: 1
+          maximum: 5
+        referenceDate: &id015
+          type: string
+          format: date
+        id: *id005
+        visibility:
+          type: string
+          enum:
+          - PRIVATE
+          - PUBLIC
+        answerSource:
+          type: string
+          enum:
+          - USER_PROVIDED
+          - OFFICIAL_VERIFIED
+        revision: &id016
+          type: integer
+          minimum: 1
+        createdAt: *id014
+        updatedAt: *id014
+      required:
+      - subject
+      - stem
+      - questionType
+      - choices
+      - providedAnswerNumber
+      - referenceDate
+      - id
+      - visibility
+      - answerSource
+      - revision
+      - createdAt
+      - updatedAt
+    RunSummary:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        status: &id017
+          type: string
+          enum:
+          - QUEUED
+          - RUNNING
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+        verdict:
+          anyOf:
+          - &id018
+            type: string
+            enum:
+            - SUPPORTED
+            - HOLD
+            - REJECTED
+          - type: 'null'
+        executionMode: &id019
+          type: string
+          enum:
+          - MOCK
+          - LIVE
+      required:
+      - id
+      - status
+      - verdict
+      - executionMode
+    QuestionListItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        stemPreview:
+          type: string
+          minLength: 1
+          maxLength: 120
+          pattern: \S
+        subject:
+          type: string
+          enum:
+          - BROKER_LAW
+        referenceDate: *id015
+        visibility:
+          type: string
+          enum:
+          - PRIVATE
+          - PUBLIC
+        revision: *id016
+        createdAt: *id014
+        latestOwnRun:
+          anyOf:
+          - $ref: '#/components/schemas/RunSummary'
+          - type: 'null'
+      required:
+      - id
+      - stemPreview
+      - subject
+      - referenceDate
+      - visibility
+      - revision
+      - createdAt
+      - latestOwnRun
+    TraceInput:
+      type: object
+      additionalProperties: false
+      properties:
+        questionRevision: *id016
+      required:
+      - questionRevision
+    TraceAccepted:
+      type: object
+      additionalProperties: false
+      properties:
+        runId: *id005
+        jobId: *id005
+        status:
+          type: string
+          enum:
+          - QUEUED
+        statusUrl:
+          type: string
+          minLength: 1
+          maxLength: 300
+          pattern: \S
+        resultUrl:
+          type: string
+          minLength: 1
+          maxLength: 300
+          pattern: \S
+      required:
+      - runId
+      - jobId
+      - status
+      - statusUrl
+      - resultUrl
+    Job:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        runId: *id005
+        status:
+          type: string
+          enum:
+          - PENDING
+          - QUEUED
+          - RUNNING
+          - RETRY_WAIT
+          - SUCCEEDED
+          - FAILED
+          - CANCELLED
+        stage:
+          type: string
+          enum:
+          - PREPARE
+          - HYDE
+          - SEARCH
+          - RERANK
+          - VERIFY
+          - PERSIST
+        stageAttempt:
+          type: integer
+          minimum: 0
+          maximum: 3
+        nextAttemptAt:
+          anyOf:
+          - *id014
+          - type: 'null'
+        errorCode:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 80
+            pattern: \S
+          - type: 'null'
+        createdAt: *id014
+        updatedAt: *id014
+      required:
+      - id
+      - runId
+      - status
+      - stage
+      - stageAttempt
+      - nextAttemptAt
+      - errorCode
+      - createdAt
+      - updatedAt
+    TraceRun:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        questionId: *id005
+        questionRevision: *id016
+        referenceDate: *id015
+        status: *id017
+        verdict:
+          anyOf:
+          - *id018
+          - type: 'null'
+        executionMode: *id019
+        versions:
+          $ref: '#/components/schemas/Versions'
+        createdAt: *id014
+        completedAt:
+          anyOf:
+          - *id014
+          - type: 'null'
+      required:
+      - id
+      - questionId
+      - questionRevision
+      - referenceDate
+      - status
+      - verdict
+      - executionMode
+      - versions
+      - createdAt
+      - completedAt
+    Evidence:
+      type: object
+      additionalProperties: false
+      properties:
+        evidenceId: *id005
+        chunkId: *id005
+        articleId: *id005
+        lawVersionId: *id005
+        lawTitle:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        articleLabel:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        quote:
+          type: string
+          minLength: 1
+          maxLength: 20000
+          pattern: \S
+        start: &id020
+          type: integer
+          minimum: 0
+        end: *id020
+        sourceUrl: &id021
+          type: string
+          format: uri
+        effectiveFrom: *id015
+        effectiveTo:
+          anyOf:
+          - *id015
+          - type: 'null'
+      required:
+      - evidenceId
+      - chunkId
+      - articleId
+      - lawVersionId
+      - lawTitle
+      - articleLabel
+      - quote
+      - start
+      - end
+      - sourceUrl
+      - effectiveFrom
+      - effectiveTo
+    ChoiceAnalysis:
+      type: object
+      additionalProperties: false
+      properties:
+        choiceNumber:
+          type: integer
+          minimum: 1
+          maximum: 5
+        originalText:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+        relation:
+          type: string
+          enum:
+          - SUPPORTS
+          - CONTRADICTS
+          - INSUFFICIENT
+        explanation:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        correctedText:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2000
+            pattern: \S
+          - type: 'null'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+          minItems: 0
+          maxItems: 20
+        evidenceIds:
+          type: array
+          items: *id005
+          minItems: 0
+          maxItems: 20
+          uniqueItems: true
+      required:
+      - choiceNumber
+      - originalText
+      - relation
+      - explanation
+      - correctedText
+      - tags
+      - evidenceIds
+    Result:
+      type: object
+      additionalProperties: false
+      properties:
+        runId: *id005
+        questionId: *id005
+        questionRevision: *id016
+        inputSnapshot:
+          $ref: '#/components/schemas/QuestionSnapshot'
+        referenceDate: *id015
+        executionMode: *id019
+        verdict: *id018
+        reasonCode:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        evidences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Evidence'
+          minItems: 0
+          maxItems: 50
+        choiceAnalyses:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/ChoiceAnalysis'
+            minItems: 5
+            maxItems: 5
+          - type: 'null'
+        versions:
+          $ref: '#/components/schemas/Versions'
+        completedAt: *id014
+      required:
+      - runId
+      - questionId
+      - questionRevision
+      - inputSnapshot
+      - referenceDate
+      - executionMode
+      - verdict
+      - reasonCode
+      - summary
+      - evidences
+      - choiceAnalyses
+      - versions
+      - completedAt
+    CancelAccepted:
+      type: object
+      additionalProperties: false
+      properties:
+        runId: *id005
+        cancelRequested:
+          const: true
+        status: *id017
+      required:
+      - runId
+      - cancelRequested
+      - status
+    Recommendation:
+      type: object
+      additionalProperties: false
+      properties:
+        questionId: *id005
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+        sharedArticleIds:
+          type: array
+          items: *id005
+          minItems: 0
+          maxItems: 20
+          uniqueItems: true
+        similarity:
+          anyOf:
+          - type: number
+            minimum: -1
+            maximum: 1
+          - type: 'null'
+      required:
+      - questionId
+      - reason
+      - sharedArticleIds
+      - similarity
+    LawArticle:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        lawVersionId: *id005
+        lawTitle:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        articleLabel:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        sourceText:
+          type: string
+          minLength: 1
+          maxLength: 200000
+          pattern: \S
+        sourceUrl: *id021
+        effectiveFrom: *id015
+        effectiveTo:
+          anyOf:
+          - *id015
+          - type: 'null'
+      required:
+      - id
+      - lawVersionId
+      - lawTitle
+      - articleLabel
+      - sourceText
+      - sourceUrl
+      - effectiveFrom
+      - effectiveTo
+    Member:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id005
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+      required:
+      - id
+      - displayName
+    CsrfToken:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+        headerName:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+        parameterName:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+      required:
+      - token
+      - headerName
+      - parameterName
+    LawImportCommand:
+      type: object
+      additionalProperties: false
+      properties:
+        sourceLawId:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+        sourceVersionKey:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        effectiveFrom: *id015
+        effectiveTo:
+          anyOf:
+          - *id015
+          - type: 'null'
+        sourceUrl: *id021
+        rawPayload:
+          type: object
+        articles:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              articleKey:
+                type: string
+                minLength: 1
+                maxLength: 160
+                pattern: \S
+              articleLabel:
+                type: string
+                minLength: 1
+                maxLength: 200
+                pattern: \S
+              sourceText:
+                type: string
+                minLength: 1
+                maxLength: 200000
+                pattern: \S
+            required:
+            - articleKey
+            - articleLabel
+            - sourceText
+          minItems: 1
+          maxItems: 10000
+      required:
+      - sourceLawId
+      - sourceVersionKey
+      - title
+      - effectiveFrom
+      - effectiveTo
+      - sourceUrl
+      - rawPayload
+      - articles
+    EvaluationCommand:
+      type: object
+      additionalProperties: false
+      properties:
+        goldenSetId: *id005
+        pipelineConfigVersion:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: \S
+      required:
+      - goldenSetId
+      - pipelineConfigVersion
+    QuestionList:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionListItem'
+          minItems: 0
+          maxItems: 50
+        nextCursor:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 1000
+            pattern: \S
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+    TraceRunList:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TraceRun'
+          minItems: 0
+          maxItems: 50
+        nextCursor:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 1000
+            pattern: \S
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+    RecommendationList:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+          minItems: 0
+          maxItems: 50
+        nextCursor:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 1000
+            pattern: \S
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+x-management-interface:
+  mode: restricted-cli-service-first
+  httpEndpoints: deferred
+  commands:
+  - LawImportCommand
+  - EvaluationCommand
+  reason: 1주차는 관리 입력 계약을 정의하며 공개 관리자 API를 구현하지 않는다.
