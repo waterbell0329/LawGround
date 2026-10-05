@@ -2,7 +2,7 @@
 
 공인중개사 기출문제의 정답 근거를 실제 법령에서 역추적·검증하고 유사문제를 추천하는 프로젝트입니다.
 
-현재는 **개발 기반만 준비된 상태**입니다. 문제 CRUD·검색·AI 파이프라인·로그인은 이후 주차에 구현합니다.
+현재는 **개발 기반과 문제 등록·단건 조회**를 구현한 상태입니다. V002 회원·문제·선택지 저장, 입력 검증·소유권·CSRF·local 개발 인증을 포함합니다. 목록/수정/삭제·큐·법령 검색·AI·Google 로그인은 후속 범위입니다.
 
 ## 기술 기준
 
@@ -54,7 +54,7 @@ Set-Location backend
 - 개발용 Swagger: `http://127.0.0.1:8080/swagger-ui/index.html`
 - RabbitMQ 관리: `http://127.0.0.1:15672` (로컬 `.env` 계정)
 
-개발 기반에서는 기능 경로를 거부하고 CSRF를 유지합니다. 운영은 prod 프로파일과 필수 환경변수를 명시해야 하며 Swagger를 기본 비활성화합니다.
+등록은 활성 회원과 CSRF가 필요하고 단건 조회는 본인/공개만 허용합니다. local 전용 고정 개발 회원·CSRF 사용법은 [실행 안내](docs/runbooks/local-development.md)에 있습니다. 운영은 prod와 필수 환경변수를 명시하며 dev-auth를 금지하고 Swagger를 기본 비활성화합니다.
 
 ## 검증
 
@@ -70,7 +70,18 @@ python scripts/check_repository.py
 
 `test`는 Docker 없이 실행하는 공통 오류·요청 ID·보안 테스트입니다. `integrationTest`는 **실제 PostgreSQL/pgvector·FTS·RabbitMQ·Flyway·health·Swagger**를 검사합니다. `check`에는 포맷과 통합 테스트가 포함되어 Docker 없이 성공으로 넘어가지 않습니다. macOS/Linux는 `./gradlew`를 사용하세요.
 
-CI는 PR → main, main/codex 브랜치 push에서 실행됩니다. 백엔드 전체 검사·JAR 생성·Compose 문법·파일 제외 경계를 확인하고 `ci-summary`가 최종 상태를 합칩니다. Python은 `ai-service/requirements.txt`와 테스트가 추가된 뒤 검사합니다.
+API 계약 검사는 Python 3.11+ 가상환경에서 저장소 루트 기준으로 실행합니다.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r scripts/requirements-contracts.txt
+.\.venv\Scripts\python.exe scripts/check_contracts.py
+.\.venv\Scripts\python.exe -m unittest discover -s scripts/tests -v
+```
+
+OpenAPI 초안은 [사용자 계약](docs/api/external-api.md)과 [내부 계약](docs/api/internal-api.md)에 있습니다. 예시 검증 통과는 업무 API 구현 완료나 Python 담당자 합의를 뜻하지 않습니다.
+
+CI는 PR → main, main/codex 브랜치 push에서 실행됩니다. 백엔드 전체 검사·JAR 생성·Compose 문법·파일 제외 경계·독립 계약 검사를 확인하고 `ci-summary`가 최종 상태를 합칩니다. Python 서비스 검사는 `ai-service/requirements.txt`와 테스트가 추가된 뒤 실행합니다.
 
 ## 파일 관리
 

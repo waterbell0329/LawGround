@@ -17,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@WebMvcTest(properties = "lawground.security.allow-local-docs=true")
+@WebMvcTest(
+        controllers = SecurityConfigurationTest.CsrfProbeController.class,
+        properties = "lawground.security.allow-local-docs=true")
 @Import({
     SecurityConfiguration.class,
     ClockConfiguration.class,

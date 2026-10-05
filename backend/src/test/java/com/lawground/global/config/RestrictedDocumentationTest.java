@@ -9,11 +9,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RestController;
 
-@WebMvcTest
+@WebMvcTest(controllers = RestrictedDocumentationTest.SliceController.class)
 @Import({SecurityConfiguration.class, ClockConfiguration.class})
 @ActiveProfiles("test")
 class RestrictedDocumentationTest {
+    @RestController
+    static class SliceController {}
+
     @Autowired private MockMvc mvc;
 
     @Test

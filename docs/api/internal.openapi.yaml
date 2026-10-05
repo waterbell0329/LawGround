@@ -1,0 +1,1730 @@
+openapi: 3.1.0
+info:
+  title: LawGround Spring ↔ Python 내부 API 제안
+  version: 0.1.0-draft
+  description: 1주차 검토용 제품 계약. 업무 API/서버 구현 완료를 뜻하지 않는다. 모든 예시는 합성 데이터다.
+servers:
+- url: http://127.0.0.1:8001/internal/v1
+x-contract-status: proposal-awaiting-python-review
+paths:
+  /embed:
+    post:
+      operationId: embed
+      summary: embed
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedOutput'
+              example:
+                items:
+                - id: 00000000-0000-4000-8000-000000000001
+                  vector: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                dim: 1024
+                modelRevision: fixture-embedding-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbedInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              texts:
+              - id: 00000000-0000-4000-8000-000000000001
+                text: 합성 임베딩 입력
+              modelRevision: fixture-embedding-v1
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: &id001
+          type: string
+          format: uuid
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 30
+      x-scope: core
+  /tokenize:
+    post:
+      operationId: tokenize
+      summary: tokenize
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeOutput'
+              example:
+                items:
+                - id: 00000000-0000-4000-8000-000000000001
+                  tokens:
+                  - 합성
+                  - 입력
+                tokenizerVersion: fixture-tokenizer-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenizeInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              texts:
+              - id: 00000000-0000-4000-8000-000000000001
+                text: 합성 임베딩 입력
+              tokenizerVersion: fixture-tokenizer-v1
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: *id001
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 30
+      x-scope: core
+  /hyde:
+    post:
+      operationId: hyde
+      summary: hyde
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HydeOutput'
+              example:
+                hypotheticalText: 합성 검색 보조 문서이며 최종 인용으로 사용하지 않습니다.
+                searchTerms:
+                - 합성
+                modelRevision: fixture-generator-v1
+                promptVersion: fixture-prompt-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HydeInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              questionSnapshot:
+                subject: BROKER_LAW
+                stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                questionType: SELECT_CORRECT
+                choices:
+                - number: 1
+                  text: 합성 설명 1
+                - number: 2
+                  text: 합성 설명 2
+                - number: 3
+                  text: 합성 설명 3
+                - number: 4
+                  text: 합성 설명 4
+                - number: 5
+                  text: 합성 설명 5
+                providedAnswerNumber: 2
+                referenceDate: '2025-10-25'
+                revision: 1
+              referenceDate: '2025-10-25'
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: *id001
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 60
+      x-scope: core
+  /rerank:
+    post:
+      operationId: rerank
+      summary: rerank
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankOutput'
+              example:
+                ranked:
+                - chunkId: 00000000-0000-4000-8000-000000000004
+                  score: -1.5
+                modelRevision: fixture-reranker-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RerankInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              query: 합성 검색 질의
+              candidates:
+              - chunkId: 00000000-0000-4000-8000-000000000004
+                text: 합성 후보
+              topK: 1
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: *id001
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 60
+      x-scope: core
+  /verify:
+    post:
+      operationId: verify
+      summary: verify
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyOutput'
+              example:
+                verdict: HOLD
+                reasonCode: INSUFFICIENT_EVIDENCE
+                summary: 합성 데이터는 법률 정답 근거가 아닙니다.
+                evidences:
+                - evidenceKey: e1
+                  chunkId: 00000000-0000-4000-8000-000000000004
+                  quote: 근거 문장
+                  start: 2
+                  end: 7
+                choiceAnalyses: null
+                tagSetVersion: null
+                modelRevision: fixture-verifier-v1
+                promptVersion: fixture-prompt-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              questionSnapshot:
+                subject: BROKER_LAW
+                stem: '[개발용 합성 문제] 옳은 설명을 고르세요.'
+                questionType: SELECT_CORRECT
+                choices:
+                - number: 1
+                  text: 합성 설명 1
+                - number: 2
+                  text: 합성 설명 2
+                - number: 3
+                  text: 합성 설명 3
+                - number: 4
+                  text: 합성 설명 4
+                - number: 5
+                  text: 합성 설명 5
+                providedAnswerNumber: 2
+                referenceDate: '2025-10-25'
+                revision: 1
+              referenceDate: '2025-10-25'
+              candidates:
+              - chunkId: 00000000-0000-4000-8000-000000000004
+                sourceText: '앞😀근거 문장
+
+                  뒤'
+                metadata:
+                  articleId: 00000000-0000-4000-8000-000000000005
+                  lawVersionId: 00000000-0000-4000-8000-000000000006
+                  lawTitle: 합성 법령
+                  articleLabel: 합성 조문
+                  effectiveFrom: '2025-01-01'
+                  effectiveTo: null
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: *id001
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 120
+      x-scope: core
+  /answer:
+    post:
+      operationId: answer
+      summary: answer
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerOutput'
+              example:
+                answerText: 합성 답변
+                citations: []
+                usage:
+                  inputTokens: 1
+                  outputTokens: 1
+                modelRevision: fixture-generator-v1
+                promptVersion: fixture-prompt-v1
+        '400':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '422':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INVALID_REQUEST
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: false
+        '429':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: RATE_LIMITED
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+          headers:
+            Retry-After:
+              schema:
+                type: string
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_NOT_READY
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '504':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: MODEL_TIMEOUT
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+        '500':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: INTERNAL_ERROR
+                message: 합성 오류
+                requestId: 00000000-0000-4000-8000-000000000009
+                timestamp: '2026-10-03T13:00:00Z'
+                retryable: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerInput'
+            example:
+              requestId: 00000000-0000-4000-8000-000000000009
+              message: 합성 질문
+              history: []
+              context: []
+              referenceDate: '2025-10-25'
+      parameters:
+      - name: X-Request-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: \S
+      - name: X-Contract-Version
+        in: header
+        required: true
+        schema:
+          const: 0.1.0-draft
+      - name: X-Job-Id
+        in: header
+        required: false
+        schema: *id001
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema: *id001
+      x-timeout-seconds: 120
+      x-scope: extension
+  /health/ready:
+    get:
+      operationId: ready
+      summary: ready
+      x-implementation-status: planned
+      security:
+      - InternalToken: []
+      responses:
+        '200':
+          description: 조회/처리 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyOutput'
+              example:
+                status: READY
+                models:
+                - name: embedding
+                  revision: fixture-embedding-v1
+                  ready: true
+        '503':
+          description: 요청을 처리하지 못함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyOutput'
+              example:
+                status: NOT_READY
+                models:
+                - name: embedding
+                  revision: fixture-embedding-v1
+                  ready: false
+components:
+  securitySchemes:
+    InternalToken:
+      type: apiKey
+      in: header
+      name: X-Internal-Token
+  schemas:
+    Choice:
+      type: object
+      additionalProperties: false
+      properties:
+        number:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          pattern: \S
+      required:
+      - number
+      - text
+    QuestionInput:
+      type: object
+      additionalProperties: false
+      properties:
+        subject: &id002
+          type: string
+          enum:
+          - BROKER_LAW
+        stem: &id003
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        questionType: &id004
+          type: string
+          enum:
+          - SELECT_CORRECT
+          - SELECT_INCORRECT
+        choices: &id005
+          type: array
+          items:
+            $ref: '#/components/schemas/Choice'
+          minItems: 5
+          maxItems: 5
+          allOf:
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 1
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 2
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 3
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 4
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+          - contains:
+              type: object
+              properties:
+                number:
+                  const: 5
+              required:
+              - number
+            minContains: 1
+            maxContains: 1
+        providedAnswerNumber: &id006
+          type: integer
+          minimum: 1
+          maximum: 5
+        referenceDate: &id007
+          type: string
+          format: date
+      required:
+      - subject
+      - stem
+      - questionType
+      - choices
+      - providedAnswerNumber
+      - referenceDate
+    QuestionSnapshot:
+      type: object
+      additionalProperties: false
+      properties:
+        subject: *id002
+        stem: *id003
+        questionType: *id004
+        choices: *id005
+        providedAnswerNumber: *id006
+        referenceDate: *id007
+        revision:
+          type: integer
+          minimum: 1
+      required:
+      - subject
+      - stem
+      - questionType
+      - choices
+      - providedAnswerNumber
+      - referenceDate
+      - revision
+    FieldError:
+      type: object
+      additionalProperties: false
+      properties:
+        field:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        message:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+      required:
+      - field
+      - message
+    Versions:
+      type: object
+      additionalProperties: false
+      properties:
+        pipelineVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        embeddingModelRevision:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        tokenizerVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        promptVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        verifierModelRevision:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+        corpusManifestHash:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 160
+            pattern: \S
+          - type: 'null'
+      required:
+      - pipelineVersion
+      - embeddingModelRevision
+      - tokenizerVersion
+      - promptVersion
+      - verifierModelRevision
+      - corpusManifestHash
+    Tag:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+      required:
+      - code
+    Error:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          enum:
+          - INVALID_REQUEST
+          - MODEL_NOT_READY
+          - RATE_LIMITED
+          - MODEL_TIMEOUT
+          - INTERNAL_ERROR
+        message:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: \S
+        requestId: *id001
+        timestamp:
+          type: string
+          format: date-time
+          pattern: Z$
+        retryable: &id010
+          type: boolean
+      required:
+      - code
+      - message
+      - requestId
+      - timestamp
+      - retryable
+    TextItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id: *id001
+        text:
+          type: string
+          minLength: 1
+          maxLength: 30000
+          pattern: \S
+      required:
+      - id
+      - text
+    EmbedInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        texts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextItem'
+          minItems: 1
+          maxItems: 32
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - requestId
+      - texts
+      - modelRevision
+    EmbedOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              id: *id001
+              vector:
+                type: array
+                items:
+                  type: number
+                minItems: 1024
+                maxItems: 1024
+            required:
+            - id
+            - vector
+          minItems: 1
+          maxItems: 32
+        dim:
+          const: 1024
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - items
+      - dim
+      - modelRevision
+    TokenizeInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        texts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextItem'
+          minItems: 1
+          maxItems: 32
+        tokenizerVersion:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - requestId
+      - texts
+      - tokenizerVersion
+    TokenizeOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              id: *id001
+              tokens:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                  pattern: \S
+                minItems: 0
+                maxItems: 10000
+            required:
+            - id
+            - tokens
+          minItems: 1
+          maxItems: 32
+        tokenizerVersion:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - items
+      - tokenizerVersion
+    HydeInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        questionSnapshot:
+          $ref: '#/components/schemas/QuestionSnapshot'
+        referenceDate: &id008
+          type: string
+          format: date
+      required:
+      - requestId
+      - questionSnapshot
+      - referenceDate
+    HydeOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        hypotheticalText:
+          type: string
+          minLength: 1
+          maxLength: 20000
+          pattern: \S
+        searchTerms:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 200
+            pattern: \S
+          minItems: 0
+          maxItems: 20
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        promptVersion:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - hypotheticalText
+      - searchTerms
+      - modelRevision
+      - promptVersion
+    RerankCandidate:
+      type: object
+      additionalProperties: false
+      properties:
+        chunkId: *id001
+        text:
+          type: string
+          minLength: 1
+          maxLength: 30000
+          pattern: \S
+      required:
+      - chunkId
+      - text
+    RerankInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        query:
+          type: string
+          minLength: 1
+          maxLength: 30000
+          pattern: \S
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/RerankCandidate'
+          minItems: 1
+          maxItems: 30
+        topK:
+          type: integer
+          minimum: 1
+          maximum: 5
+      required:
+      - requestId
+      - query
+      - candidates
+      - topK
+    RerankOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        ranked:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              chunkId: *id001
+              score:
+                type: number
+            required:
+            - chunkId
+            - score
+          minItems: 1
+          maxItems: 5
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - ranked
+      - modelRevision
+    CandidateMetadata:
+      type: object
+      additionalProperties: false
+      properties:
+        articleId: *id001
+        lawVersionId: *id001
+        lawTitle:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        articleLabel:
+          type: string
+          minLength: 1
+          maxLength: 200
+          pattern: \S
+        effectiveFrom: *id008
+        effectiveTo:
+          anyOf:
+          - *id008
+          - type: 'null'
+      required:
+      - articleId
+      - lawVersionId
+      - lawTitle
+      - articleLabel
+      - effectiveFrom
+      - effectiveTo
+    VerifyCandidate:
+      type: object
+      additionalProperties: false
+      properties:
+        chunkId: *id001
+        sourceText:
+          type: string
+          minLength: 1
+          maxLength: 200000
+          pattern: \S
+        metadata:
+          $ref: '#/components/schemas/CandidateMetadata'
+      required:
+      - chunkId
+      - sourceText
+      - metadata
+    VerifyInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        questionSnapshot:
+          $ref: '#/components/schemas/QuestionSnapshot'
+        referenceDate: *id008
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyCandidate'
+          minItems: 1
+          maxItems: 5
+      required:
+      - requestId
+      - questionSnapshot
+      - referenceDate
+      - candidates
+    VerifyEvidence:
+      type: object
+      additionalProperties: false
+      properties:
+        evidenceKey:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+        chunkId: *id001
+        quote:
+          type: string
+          minLength: 1
+          maxLength: 20000
+          pattern: \S
+        start: &id009
+          type: integer
+          minimum: 0
+        end: *id009
+      required:
+      - evidenceKey
+      - chunkId
+      - quote
+      - start
+      - end
+    VerifyChoice:
+      type: object
+      additionalProperties: false
+      properties:
+        choiceNumber:
+          type: integer
+          minimum: 1
+          maximum: 5
+        relation:
+          type: string
+          enum:
+          - SUPPORTS
+          - CONTRADICTS
+          - INSUFFICIENT
+        explanation:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        correctedText:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 2000
+            pattern: \S
+          - type: 'null'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+          minItems: 0
+          maxItems: 20
+        evidenceKeys:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: \S
+          minItems: 0
+          maxItems: 20
+          uniqueItems: true
+      required:
+      - choiceNumber
+      - relation
+      - explanation
+      - correctedText
+      - tags
+      - evidenceKeys
+    VerifyOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        verdict:
+          type: string
+          enum:
+          - SUPPORTED
+          - HOLD
+          - REJECTED
+        reasonCode:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: \S
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        evidences:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyEvidence'
+          minItems: 0
+          maxItems: 50
+        choiceAnalyses:
+          anyOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/VerifyChoice'
+            minItems: 5
+            maxItems: 5
+          - type: 'null'
+        tagSetVersion:
+          anyOf:
+          - type: string
+            minLength: 1
+            maxLength: 80
+            pattern: \S
+          - type: 'null'
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        promptVersion:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - verdict
+      - reasonCode
+      - summary
+      - evidences
+      - choiceAnalyses
+      - tagSetVersion
+      - modelRevision
+      - promptVersion
+    ReadyOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+          - READY
+          - NOT_READY
+        models:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 80
+                pattern: \S
+              revision:
+                anyOf:
+                - type: string
+                  minLength: 1
+                  maxLength: 160
+                  pattern: \S
+                - type: 'null'
+              ready: *id010
+            required:
+            - name
+            - revision
+            - ready
+          minItems: 0
+          maxItems: 20
+      required:
+      - status
+      - models
+    AnswerInput:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId: *id001
+        message:
+          type: string
+          minLength: 1
+          maxLength: 10000
+          pattern: \S
+        history:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              role:
+                type: string
+                enum:
+                - user
+                - assistant
+              content:
+                type: string
+                minLength: 1
+                maxLength: 10000
+                pattern: \S
+            required:
+            - role
+            - content
+          minItems: 0
+          maxItems: 20
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyCandidate'
+          minItems: 0
+          maxItems: 5
+        referenceDate: *id008
+      required:
+      - requestId
+      - message
+      - history
+      - context
+      - referenceDate
+    AnswerOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        answerText:
+          type: string
+          minLength: 1
+          maxLength: 20000
+          pattern: \S
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyEvidence'
+          minItems: 0
+          maxItems: 20
+        usage:
+          type: object
+          additionalProperties: false
+          properties:
+            inputTokens: *id009
+            outputTokens: *id009
+          required:
+          - inputTokens
+          - outputTokens
+        modelRevision:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+        promptVersion:
+          type: string
+          minLength: 1
+          maxLength: 160
+          pattern: \S
+      required:
+      - answerText
+      - citations
+      - usage
+      - modelRevision
+      - promptVersion
+x-connect-timeout-seconds: 3
+x-offset-unit: unicode-code-points-start-inclusive-end-exclusive

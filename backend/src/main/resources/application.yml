@@ -65,10 +65,13 @@ management:
 springdoc:
   api-docs:
     enabled: false
+
   swagger-ui:
     enabled: false
 
 lawground:
+  security:
+    dev-auth-enabled: ${LAWGROUND_DEV_AUTH_ENABLED:false}
   ai:
     base-url: ${AI_SERVICE_BASE_URL:http://127.0.0.1:8001/internal/v1}
     api-key: ${AI_SERVICE_API_KEY:}
@@ -84,5 +87,7 @@ lawground:
     api-key: ${LAW_GO_KR_API_KEY:}
 
 logging:
+  level:
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
   pattern:
     level: "%5p [requestId:%X{requestId:-none}]"

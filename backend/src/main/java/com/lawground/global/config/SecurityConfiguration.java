@@ -1,6 +1,7 @@
 package com.lawground.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lawground.auth.LocalDevelopmentAuth;
 import com.lawground.global.error.ErrorCode;
 import com.lawground.global.error.ErrorResponseDTO;
 import com.lawground.global.web.RequestIdFilter;
@@ -13,10 +14,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfiguration {
@@ -25,8 +29,14 @@ public class SecurityConfiguration {
             HttpSecurity http,
             ObjectMapper mapper,
             Clock clock,
+            Environment environment,
+            @Value("${lawground.security.dev-auth-enabled:false}") boolean devAuthEnabled,
+            @Value("${server.address:127.0.0.1}") String address,
             @Value("${lawground.security.allow-local-docs:false}") boolean allowLocalDocs)
             throws Exception {
+        LocalDevelopmentAuth.validate(devAuthEnabled, environment, address);
+        if (devAuthEnabled)
+            http.addFilterBefore(new LocalDevelopmentAuth(), AnonymousAuthenticationFilter.class);
         http.authorizeHttpRequests(
                 requests -> {
                     requests.requestMatchers("/actuator/health", "/actuator/health/**").permitAll();
@@ -38,7 +48,11 @@ public class SecurityConfiguration {
                                         "/swagger-ui/**")
                                 .permitAll();
                     }
-                    // Y04/Y11 will add explicit API permissions and authentication.
+                    requests.requestMatchers(HttpMethod.POST, "/api/v1/questions").authenticated();
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/questions/*").permitAll();
+                    if (devAuthEnabled)
+                        requests.requestMatchers(HttpMethod.GET, "/api/v1/dev/csrf")
+                                .authenticated();
                     requests.anyRequest().denyAll();
                 });
         http.formLogin(AbstractHttpConfigurer::disable)

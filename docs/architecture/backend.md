@@ -2,7 +2,7 @@
 
 ## 구현 범위
 
-이번 변경은 Y02 개발 기반이다. Spring 기동, 설정, DB 확장 마이그레이션, 공통 오류, 요청 ID, 보안 기본값과 실제 인프라 테스트를 준비한다. 문제 CRUD·검색·LLM 호출·로그인 기능과 도메인 테이블은 아직 구현하지 않았다.
+Y02 개발 기반에 2주차 V002 회원·문제·선택지와 등록·단건 조회를 추가했다. 입력 검증·원문 정규화·소유권·CSRF·로컬 개발 인증·DB 제약을 검사한다. 목록/수정/삭제·큐·법령 검색·LLM·실제 로그인은 후속 범위다. 상세는 [문제 저장 구조](questions.md)를 따른다.
 
 ## 디렉터리
 
@@ -15,7 +15,7 @@ backend/
     question/ trace/    # 문제, 분석 실행·근거
     recommendation/    # 유사문제
     evaluation/        # 골든셋·평가
-    job/                # 작업·outbox·메시징
+    job/                # 작업·메시징·중복/복구 처리 (outbox는 현재 제외)
     conversation/ bookmark/ usage/  # 후속 확장 자리
     integration/ai/    # Python HTTP 계약·어댑터
     integration/law/   # 법령 API 어댑터
@@ -55,7 +55,7 @@ Spring 의존성 버전은 Boot 3.5.16 BOM이 관리한다. Gradle은 호환 범
 - 기본 프로파일은 local이며 루프백 주소에 바인딩한다. 운영은 명시적으로 prod를 선택한다.
 - local만 `.env`를 읽는다. test 프로파일 단독 실행은 `.env`를 읽지 않으며 Testcontainers가 연결을 제공한다.
 - 비밀번호와 운영 연결 정보에 기본 운영 값을 넣지 않는다. prod에서는 필수 값 누락 시 기동에 실패한다.
-- health/readiness만 공통 공개한다. 문서 열람은 local 설정에서만 허용한다. 그 외 요청은 명시적인 권한 규칙이 생길 때까지 거부한다.
+- health/readiness와 공개 문제 단건 조회를 허용한다. 등록은 활성 회원/CSRF를 확인하고 다른 기능은 아직 거부한다. Swagger는 local 설정에서만 공개한다.
 - CSRF를 유지한다. 임시 Basic 로그인이나 클라이언트 `memberId` 인증은 제공하지 않는다.
 - 요청 ID는 제한된 64자 패턴으로 검증하고 없거나 잘못되면 UUID를 만든다. 요청이 끝나면 MDC를 정리한다.
 - 오류 응답은 코드·메시지·requestId·UTC 시각·필드 오류를 제공한다. 입력 원문·rejectedValue·스택트레이스는 반환하지 않는다.
